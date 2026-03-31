@@ -1447,7 +1447,17 @@ body::before {
 
     <div class="field">
       <label class="field-label">P&amp;L ($)</label>
-      <input class="field-input" type="number" id="fPnl" placeholder="e.g. 120.00 or -45.00" step="0.01" inputmode="decimal">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+        <button type="button" id="pnlWin" onclick="setPnlType('win')"
+          style="padding:10px;border-radius:12px;border:1px solid var(--up-border);background:var(--up-pale);color:var(--up);font-family:'Jost',-apple-system,sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 150ms ease;">
+          ▲ Profit
+        </button>
+        <button type="button" id="pnlLoss" onclick="setPnlType('loss')"
+          style="padding:10px;border-radius:12px;border:1px solid var(--border);background:var(--bg);color:var(--ink-4);font-family:'Jost',-apple-system,sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 150ms ease;">
+          ▼ Loss
+        </button>
+      </div>
+      <input class="field-input" type="number" id="fPnl" placeholder="Enter amount e.g. 120.00" step="0.01" inputmode="decimal" min="0">
     </div>
 
     <div class="field">
@@ -1752,6 +1762,29 @@ function setDir(d) {
   document.getElementById('dShort').className = 'dir-opt'+(d==='short'?' sel-short':'');
 }
 
+let pnlType = 'win';
+
+function setPnlType(type) {
+  pnlType = type;
+  const winBtn  = document.getElementById('pnlWin');
+  const lossBtn = document.getElementById('pnlLoss');
+  if(type === 'win') {
+    winBtn.style.background  = 'var(--up-pale)';
+    winBtn.style.borderColor = 'var(--up-border)';
+    winBtn.style.color       = 'var(--up)';
+    lossBtn.style.background  = 'var(--bg)';
+    lossBtn.style.borderColor = 'var(--border)';
+    lossBtn.style.color       = 'var(--ink-4)';
+  } else {
+    lossBtn.style.background  = 'var(--down-pale)';
+    lossBtn.style.borderColor = 'var(--down-border)';
+    lossBtn.style.color       = 'var(--down)';
+    winBtn.style.background  = 'var(--bg)';
+    winBtn.style.borderColor = 'var(--border)';
+    winBtn.style.color       = 'var(--ink-4)';
+  }
+}
+
 function saveTrade() {
   const inst  = document.getElementById('fInstrument').value;
   const entry = parseFloat(document.getElementById('fEntry').value);
@@ -1759,14 +1792,14 @@ function saveTrade() {
   const lot   = parseFloat(document.getElementById('fLot').value)||0.01;
   const mPnl  = parseFloat(document.getElementById('fPnl').value);
   const note  = document.getElementById('fNote').value.trim();
-  let pnl = mPnl;
-  if(isNaN(pnl) && !isNaN(entry) && !isNaN(exit))
-    pnl = (dir==='long'?exit-entry:entry-exit)*lot*100;
-  if(isNaN(pnl)){ alert('Please enter a P&L amount'); return; }
+  let pnl = Math.abs(mPnl);
+  if(isNaN(pnl) || pnl === 0){ alert('Please enter a P&L amount'); return; }
+  if(pnlType === 'loss') pnl = -pnl;
   trades.push({id:Date.now(),date:tdy(),instrument:inst,direction:dir,entry:entry||0,exit:exit||0,lotSize:lot,pnl,note});
   localStorage.setItem('cj_trades',JSON.stringify(trades));
   ['fEntry','fExit','fPnl','fNote'].forEach(id=>document.getElementById(id).value='');
   setDir('long');
+  setPnlType('win');
   closeModal();
   drawDash();
 }
