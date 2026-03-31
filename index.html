@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>COZYX Journal</title>
+
+<!-- iOS Home Screen App Metadata -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="COZYX">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#F6F1EC">
+
+<!-- iOS App Icon — blush pink with CJ monogram -->
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23F6F1EC'/%3E%3Crect width='180' height='180' rx='40' fill='%23E5C7C3' opacity='0.5'/%3E%3Ctext x='90' y='72' font-family='Georgia%2C serif' font-size='28' font-weight='400' fill='%23A87370' text-anchor='middle' letter-spacing='3'%3ECOZYX%3C/text%3E%3Ctext x='90' y='108' font-family='Georgia%2C serif' font-size='20' font-style='italic' font-weight='300' fill='%23C49591' text-anchor='middle'%3EJournal%3C/text%3E%3Cline x1='50' y1='120' x2='130' y2='120' stroke='%23E5C7C3' stroke-width='1'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" crossorigin>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<style>
+
+/* ═══════════════════════════════════════════
+   COZYX JOURNAL — Soft Luxury Palette
+   Warm parchment · Blush accent · Sage whisper
+   ═══════════════════════════════════════════ */
+:root {
+  /* Page & Card */
+  --bg:          #F6F1EC;
+  --card:        #FBF8F5;
+  --card-2:      #F7F3EE;
+  --border:      #E8DFD8;
+  --border-2:    #EFE8E2;
+
+  /* Text hierarchy — warm, not cold black */
+  --ink-1:       #3A3532;   /* primary — headings, numbers */
+  --ink-2:       #5C524D;   /* secondary — body text */
+  --ink-3:       #7A706B;   /* tertiary — meta, notes */
+  --ink-4:       #A0958E;   /* light — labels, captions */
+
+  /* Blush — the one accent */
+  --blush:       #E5C7C3;
+  --blush-deep:  #C49591;
+  --blush-richer:#A87370;
+  --blush-pale:  #F5EDEB;
+  --blush-hover: #DDB4AE;
+
+  /* Sage — barely there */
+  --sage:        #B4C8B8;
+  --sage-pale:   #EBF0EB;
+  --sage-deep:   #6E9B78;
+
+  /* P&L — readable but soft */
+  --up:          #4A7A5A;
+  --up-pale:     #EAF3ED;
+  --up-border:   #B8D9C0;
+  --down:        #8A4848;
+  --down-pale:   #F5EAEA;
+  --down-border: #D9B8B8;
+
+  /* Shadows — warm-toned depth */
+  --shadow-xs:   0 2px 8px rgba(120,90,70,0.05);
+  --shadow-sm:   0 4px 14px rgba(120,90,70,0.07);
+  --shadow-md:   0 6px 18px rgba(120,90,70,0.08);
+  --shadow-hero: 0 8px 32px rgba(120,90,70,0.10);
+}
+
+/* ── iOS FULLSCREEN APP LAUNCH ── */
+html {
+  background: #F6F1EC;
+}
+
+/* Safe area padding for iPhone notch and home bar */
+.app {
+  padding-top: env(safe-area-inset-top);
+}
+
+.bottom-nav {
+  padding-bottom: calc(18px + env(safe-area-inset-bottom));
+}
+
+.fab-zone {
+  bottom: calc(80px + env(safe-area-inset-bottom));
+}
+
+/* ── RESET ── */
+*, *::before, *::after {
+  margin: 0; padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--ink-1);
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Very subtle paper texture */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0;
+}
+
+.app {
+  position: relative; z-index: 1;
+  max-width: 430px; margin: 0 auto;
+  min-height: 100vh;
+  padding-bottom: 110px;
+}
+
+/* ═══════════════════════════
+   TAB BAR — journal tab feel
+   ═══════════════════════════ */
+.tab-bar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(246,241,236,0.94);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  padding: 0 6px;
+}
+
+.tab {
+  flex: 1;
+  padding: 15px 4px 13px;
+  text-align: center;
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 200ms ease, border-color 200ms ease;
+}
+
+.tab:hover { color: var(--ink-3); }
+
+.tab.active {
+  color: var(--ink-1);
+  border-bottom-color: var(--blush-deep);
+  font-weight: 600;
+}
+
+.view { display: none; }
+.view.active { display: block; }
+
+/* ═══════════════════════════
+   PAGE HEADER — branded luxury
+   ═══════════════════════════ */
+.page-header {
+  padding: 40px 24px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+/* The wordmark — Cormorant for the serif luxury feel */
+.wordmark {
+  font-family: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+  font-size: 30px;
+  font-weight: 400;
+  color: var(--ink-1);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.wordmark em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--blush-richer);
+  font-size: 26px;
+  letter-spacing: 0.02em;
+}
+
+.today-chip {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-3);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 13px;
+  letter-spacing: 0.04em;
+  box-shadow: var(--shadow-xs);
+}
+
+/* ═══════════════════════════
+   INTENTION — morning journaling feel
+   ═══════════════════════════ */
+.intention-wrap {
+  margin: 0 20px 20px;
+  border-left: 3px solid var(--blush);
+  padding: 14px 18px 12px;
+  background: var(--blush-pale);
+  border-radius: 0 14px 14px 0;
+  box-shadow: var(--shadow-xs);
+}
+
+.intention-eyebrow {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--blush-richer);
+  margin-bottom: 7px;
+}
+
+.intention-input {
+  width: 100%;
+  background: transparent;
+  border: none; outline: none;
+  font-family: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--ink-2);
+  line-height: 1.55;
+  resize: none;
+}
+
+.intention-input::placeholder {
+  color: var(--blush-deep);
+  opacity: 0.55;
+}
+
+.intention-saved {
+  font-size: 10px;
+  color: var(--blush-richer);
+  text-align: right;
+  margin-top: 5px;
+  opacity: 0;
+  transition: opacity 280ms;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+.intention-saved.show { opacity: 1; }
+
+/* ═══════════════════════════
+   BALANCE HERO — the centrepiece
+   ═══════════════════════════ */
+.balance-hero {
+  margin: 0 20px 24px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 28px 26px 26px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-hero);
+}
+
+/* Blush bloom — decorative background */
+.balance-hero::before {
+  content: '';
+  position: absolute;
+  top: -50px; right: -50px;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(229,199,195,0.22) 0%, transparent 68%);
+  pointer-events: none;
+}
+
+/* Sage whisper */
+.balance-hero::after {
+  content: '';
+  position: absolute;
+  bottom: -30px; left: -30px;
+  width: 130px; height: 130px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(180,200,184,0.15) 0%, transparent 68%);
+  pointer-events: none;
+}
+
+.balance-eyebrow {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-bottom: 10px;
+}
+
+.balance-number {
+  font-family: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+  font-size: 56px;
+  font-weight: 500;
+  color: var(--ink-1);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  margin-bottom: 10px;
+}
+
+.balance-number sup {
+  font-size: 26px;
+  vertical-align: super;
+  font-weight: 400;
+  color: var(--ink-3);
+}
+
+.balance-number .dec {
+  font-size: 30px;
+  color: var(--ink-3);
+  font-weight: 400;
+}
+
+.balance-delta {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: 99px;
+  margin-bottom: 22px;
+  letter-spacing: 0.03em;
+}
+.balance-delta.up   { background: var(--up-pale);   color: var(--up);   border: 1px solid var(--up-border); }
+.balance-delta.down { background: var(--down-pale); color: var(--down); border: 1px solid var(--down-border); }
+.balance-delta.flat { background: var(--card-2); color: var(--ink-4); border: 1px solid var(--border); }
+
+/* Progress */
+.progress-section { }
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.progress-label {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+.progress-badge {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 99px;
+  letter-spacing: 0.05em;
+}
+.progress-badge.good { background: var(--up-pale); color: var(--up); border: 1px solid var(--up-border); }
+.progress-badge.warn { background: var(--down-pale); color: var(--down); border: 1px solid var(--down-border); }
+
+.progress-bar {
+  height: 5px;
+  background: var(--border-2);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--blush-richer) 0%, var(--blush) 100%);
+  transition: width 700ms cubic-bezier(.4,0,.2,1);
+}
+
+.progress-fill.low {
+  background: linear-gradient(90deg, var(--down), #B07070);
+}
+
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--ink-4);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+/* ═══════════════════════════
+   SECTION LABEL — delicate caps
+   ═══════════════════════════ */
+.section-label {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin: 0 20px 10px;
+}
+
+/* ═══════════════════════════
+   WEEK ROW
+   ═══════════════════════════ */
+.week-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 7px;
+  margin: 0 20px 28px;
+}
+
+.day-tile {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 4px;
+  text-align: center;
+  transition: all 200ms ease;
+  box-shadow: var(--shadow-xs);
+}
+
+.day-tile.is-today {
+  border-color: var(--blush-deep);
+  background: var(--blush-pale);
+  box-shadow: 0 0 0 3px rgba(196,149,145,0.12);
+}
+
+.day-tile.is-up {
+  background: var(--up-pale);
+  border-color: var(--up-border);
+}
+
+.day-tile.is-down {
+  background: var(--down-pale);
+  border-color: var(--down-border);
+}
+
+.day-tile-name {
+  display: block;
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-bottom: 5px;
+}
+
+.day-tile-val {
+  display: block;
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-3);
+}
+
+.day-tile.is-up   .day-tile-val { color: var(--up); }
+.day-tile.is-down .day-tile-val { color: var(--down); }
+.day-tile.is-today .day-tile-val { color: var(--blush-richer); }
+
+/* ═══════════════════════════
+   STAT TRIO — soft paper tiles
+   ═══════════════════════════ */
+.stat-trio {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 9px;
+  margin: 0 20px 28px;
+}
+
+.stat-tile {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px 12px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-num {
+  font-family: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--ink-1);
+  display: block;
+  line-height: 1.1;
+}
+.stat-num.up   { color: var(--up); }
+.stat-num.down { color: var(--down); }
+
+.stat-label {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  display: block;
+  margin-top: 4px;
+}
+
+/* ═══════════════════════════
+   INSIGHT STRIP — sage warmth
+   ═══════════════════════════ */
+.insight-strip {
+  margin: 0 20px 28px;
+  background: var(--sage-pale);
+  border: 1px solid rgba(180,200,184,0.55);
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  box-shadow: var(--shadow-xs);
+}
+
+.insight-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.insight-body {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.insight-body strong {
+  font-weight: 600;
+  color: var(--ink-1);
+}
+
+/* ═══════════════════════════
+   SECTION ROW — heading + button
+   ═══════════════════════════ */
+.section-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 20px 12px;
+}
+
+.section-heading {
+  font-family: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink-1);
+  letter-spacing: 0.01em;
+}
+
+/* Log Trade — soft blush button, feminine, clear */
+.action-btn {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--ink-1);
+  background: var(--blush);
+  border: 1px solid var(--blush-deep);
+  border-radius: 16px;
+  padding: 7px 16px;
+  cursor: pointer;
+  transition: background 180ms ease, border-color 180ms ease;
+}
+
+.action-btn:hover {
+  background: var(--blush-hover);
+  border-color: var(--blush-richer);
+}
+
+/* ═══════════════════════════
+   TRADE LIST
+   ═══════════════════════════ */
+.trade-card {
+  margin: 0 20px 10px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.trade-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 18px;
+  border-bottom: 1px solid var(--border-2);
+  transition: background 150ms ease;
+  cursor: pointer;
+}
+
+.trade-row:last-child { border-bottom: none; }
+.trade-row:hover { background: var(--blush-pale); }
+
+.trade-pip {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.trade-pip.up   { background: var(--up); }
+.trade-pip.down { background: var(--down); }
+
+.trade-main { flex: 1; }
+
+.trade-name {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-1);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 3px;
+}
+
+.trade-tag {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+.trade-tag.long  { background: var(--up-pale);   color: var(--up);   border: 1px solid var(--up-border); }
+.trade-tag.short { background: var(--down-pale); color: var(--down); border: 1px solid var(--down-border); }
+
+.trade-note {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 11px;
+  color: var(--ink-4);
+  font-weight: 400;
+}
+
+.trade-right { text-align: right; }
+
+.trade-pnl {
+  font-family: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1.1;
+}
+.trade-pnl.up   { color: var(--up); }
+.trade-pnl.down { color: var(--down); }
+
+.trade-lots {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 10px;
+  color: var(--ink-4);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+.empty-state {
+  padding: 32px 20px;
+  text-align: center;
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 13px;
+  color: var(--ink-4);
+  line-height: 1.65;
+}
+
+/* ═══════════════════════════
+   CALENDAR
+   ═══════════════════════════ */
+.cal-wrap { padding: 28px 20px 0; }
+
+.cal-nav-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.cal-arrow {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--ink-2);
+  font-weight: 500;
+  transition: all 180ms ease;
+  box-shadow: var(--shadow-xs);
+}
+.cal-arrow:hover {
+  background: var(--blush-pale);
+  border-color: var(--blush-deep);
+  color: var(--blush-richer);
+}
+
+.cal-month-name {
+  font-family: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+  font-size: 22px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink-1);
+  letter-spacing: 0.01em;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.cal-head {
+  text-align: center;
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding: 6px 0;
+}
+
+.cal-day {
+  aspect-ratio: 1;
+  border-radius: 9px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 150ms ease;
+  border: 1px solid transparent;
+}
+
+.cal-day:hover { background: var(--blush-pale); }
+.cal-day.is-today {
+  border-color: var(--blush-deep);
+  background: var(--blush-pale);
+  box-shadow: 0 0 0 2px rgba(196,149,145,0.15);
+}
+.cal-day.is-up   { background: var(--up-pale);   border-color: var(--up-border); }
+.cal-day.is-down { background: var(--down-pale); border-color: var(--down-border); }
+.cal-day.other   { opacity: 0.25; }
+
+.cal-d {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-1);
+  line-height: 1;
+}
+.cal-p {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1;
+  margin-top: 2px;
+}
+.cal-p.up   { color: var(--up); }
+.cal-p.down { color: var(--down); }
+.cal-day.is-up   .cal-d { color: var(--up); }
+.cal-day.is-down .cal-d { color: var(--down); }
+
+.month-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+  margin: 20px 0 20px;
+}
+
+.m-stat {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: var(--shadow-xs);
+}
+
+.m-stat-val {
+  font-family: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--ink-1);
+  display: block;
+  line-height: 1.1;
+}
+.m-stat-val.up   { color: var(--up); }
+.m-stat-val.down { color: var(--down); }
+
+.m-stat-label {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  display: block;
+  margin-top: 4px;
+}
+
+.export-row { margin-bottom: 24px; }
+
+.export-pill {
+  width: 100%;
+  background: var(--card);
+  color: var(--ink-2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  transition: all 200ms ease;
+  box-shadow: var(--shadow-xs);
+}
+.export-pill:hover {
+  background: var(--blush-pale);
+  border-color: var(--blush-deep);
+  color: var(--ink-1);
+}
+
+/* ═══════════════════════════
+   INSIGHTS VIEW
+   ═══════════════════════════ */
+.insights-wrap { padding: 28px 20px 0; }
+
+.view-title {
+  font-family: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+  font-size: 26px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink-1);
+  margin-bottom: 4px;
+  letter-spacing: 0.01em;
+}
+
+.view-sub {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 12px;
+  color: var(--ink-4);
+  font-weight: 400;
+  margin-bottom: 24px;
+  letter-spacing: 0.02em;
+}
+
+.insight-block {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.insight-block-title {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid var(--border-2);
+}
+
+.insight-row {
+  display: flex;
+  align-items: center;
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--border-2);
+  gap: 12px;
+}
+.insight-row:last-child { border-bottom: none; }
+
+.insight-pill {
+  background: var(--blush-pale);
+  color: var(--blush-richer);
+  border: 1px solid var(--blush);
+  border-radius: 99px;
+  padding: 4px 12px;
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.03em;
+}
+
+.insight-info { flex: 1; }
+.insight-name {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-1);
+}
+.insight-avg {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 11px;
+  color: var(--ink-4);
+  margin-top: 2px;
+  font-weight: 400;
+}
+
+.insight-total {
+  font-family: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+  font-size: 20px;
+  font-weight: 500;
+}
+.insight-total.up   { color: var(--up); }
+.insight-total.down { color: var(--down); }
+
+/* ═══════════════════════════
+   LADDER VIEW
+   ═══════════════════════════ */
+.ladder-wrap { padding: 28px 20px 0; }
+
+.ladder-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.ladder-row {
+  display: flex;
+  align-items: center;
+  padding: 15px 18px;
+  border-bottom: 1px solid var(--border-2);
+  gap: 14px;
+}
+.ladder-row:last-child { border-bottom: none; }
+
+.ladder-badge {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+  background: var(--card-2);
+  color: var(--ink-4);
+  border: 1px solid var(--border);
+}
+
+.ladder-badge.active {
+  background: var(--blush-pale);
+  color: var(--blush-richer);
+  border-color: var(--blush-deep);
+}
+
+.ladder-badge.done {
+  background: var(--up-pale);
+  color: var(--up);
+  border-color: var(--up-border);
+}
+
+.ladder-info { flex: 1; }
+
+.ladder-title {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-1);
+}
+
+.ladder-sub {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 11px;
+  color: var(--ink-4);
+  margin-top: 2px;
+  font-weight: 400;
+}
+
+.ladder-end {
+  font-family: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--ink-1);
+}
+
+.note-card {
+  background: var(--blush-pale);
+  border: 1px solid rgba(229,199,195,0.7);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-xs);
+}
+
+.note-card p {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+.note-card strong {
+  font-weight: 600;
+  color: var(--ink-1);
+}
+
+/* ═══════════════════════════
+   FAB — blush luxury button
+   ═══════════════════════════ */
+.fab-zone {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  width: calc(100% - 40px);
+  max-width: 390px;
+}
+
+.fab {
+  width: 100%;
+  background: var(--blush);
+  color: var(--ink-1);
+  border: 1px solid var(--blush-deep);
+  border-radius: 16px;
+  padding: 16px;
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  box-shadow: 0 4px 20px rgba(196,149,145,0.28);
+  transition: all 200ms ease;
+}
+
+.fab:hover {
+  background: var(--blush-hover);
+  border-color: var(--blush-richer);
+  box-shadow: 0 6px 24px rgba(196,149,145,0.35);
+  transform: translateY(-1px);
+}
+
+.fab:active { transform: translateY(0); }
+
+/* ═══════════════════════════
+   BOTTOM NAV — whisper quiet
+   ═══════════════════════════ */
+.bottom-nav {
+  position: fixed; bottom: 0;
+  left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 430px;
+  background: rgba(246,241,236,0.96);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: space-around;
+  padding: 10px 0 20px;
+  z-index: 50;
+}
+
+.nav-btn {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 4px;
+  cursor: pointer;
+  padding: 5px 14px;
+  border-radius: 12px;
+  transition: background 150ms ease;
+}
+
+.nav-btn:hover { background: var(--blush-pale); }
+
+.nav-btn svg {
+  width: 20px; height: 20px;
+  stroke: var(--ink-4);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round; stroke-linejoin: round;
+  transition: stroke 150ms ease;
+}
+
+.nav-btn.active svg { stroke: var(--ink-1); }
+
+.nav-lbl {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  transition: color 150ms ease;
+}
+
+.nav-btn.active .nav-lbl {
+  color: var(--ink-1);
+  font-weight: 700;
+}
+
+/* ═══════════════════════════
+   MODAL SHEET
+   ═══════════════════════════ */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(58,53,50,0.3);
+  backdrop-filter: blur(6px);
+  z-index: 200;
+  display: none;
+  align-items: flex-end; justify-content: center;
+}
+.overlay.open { display: flex; }
+
+.sheet {
+  background: var(--card);
+  border-radius: 24px 24px 0 0;
+  padding: 24px 24px 40px;
+  width: 100%; max-width: 430px;
+  max-height: 92vh; overflow-y: auto;
+  box-shadow: 0 -8px 40px rgba(120,90,70,0.14);
+  animation: slideUp 280ms cubic-bezier(.4,0,.2,1);
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+.sheet-handle {
+  width: 36px; height: 4px;
+  background: var(--border);
+  border-radius: 99px;
+  margin: 0 auto 22px;
+}
+
+.sheet-title {
+  font-family: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+  font-size: 24px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink-1);
+  margin-bottom: 22px;
+  letter-spacing: 0.01em;
+}
+
+.field { margin-bottom: 15px; }
+
+.field-label {
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  display: block;
+  margin-bottom: 7px;
+}
+
+.field-input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ink-1);
+  outline: none;
+  transition: border-color 150ms ease;
+  -webkit-appearance: none;
+}
+.field-input:focus { border-color: var(--blush-deep); background: var(--blush-pale); }
+
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.dir-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+
+.dir-opt {
+  padding: 13px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  transition: all 150ms ease;
+  color: var(--ink-4);
+}
+.dir-opt.sel-long  { background: var(--up-pale);   border-color: var(--up-border);   color: var(--up); }
+.dir-opt.sel-short { background: var(--down-pale); border-color: var(--down-border); color: var(--down); }
+
+.save-btn {
+  width: 100%;
+  background: var(--blush);
+  color: var(--ink-1);
+  border: 1px solid var(--blush-deep);
+  border-radius: 14px;
+  padding: 16px;
+  font-family: 'Jost', -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 200ms ease;
+}
+.save-btn:hover { background: var(--blush-hover); border-color: var(--blush-richer); }
+
+/* ── ENTRY ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.page-header    { animation: fadeUp 380ms ease both 20ms; }
+.intention-wrap { animation: fadeUp 380ms ease both 50ms; }
+.balance-hero   { animation: fadeUp 380ms ease both 80ms; }
+.week-row       { animation: fadeUp 380ms ease both 110ms; }
+.stat-trio      { animation: fadeUp 380ms ease both 130ms; }
+.insight-strip  { animation: fadeUp 380ms ease both 150ms; }
+.section-row    { animation: fadeUp 380ms ease both 170ms; }
+#tradeList      { animation: fadeUp 380ms ease both 190ms; }
+
+/* ── PDF REPORT ── */
+#pdfReport{display:none;padding:32px;font-family:'Jost',sans-serif;background:#FBF8F5;color:#3A3532;}
+#pdfReport h1{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:400;font-style:italic;margin-bottom:4px;color:#3A3532;}
+#pdfReport .ps{font-size:11px;color:#A0958E;margin-bottom:20px;letter-spacing:0.04em;}
+#pdfReport .pg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;}
+#pdfReport .pst{background:#F6F1EC;border:1px solid #E8DFD8;border-radius:10px;padding:14px;}
+#pdfReport .psv{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:500;display:block;color:#3A3532;}
+#pdfReport .psl{font-size:10px;color:#A0958E;text-transform:uppercase;letter-spacing:0.08em;margin-top:4px;display:block;font-weight:600;}
+#pdfReport table{width:100%;border-collapse:collapse;font-size:12px;}
+#pdfReport th{text-align:left;padding:8px 10px;border-bottom:2px solid #E8DFD8;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:#A0958E;font-weight:700;}
+#pdfReport td{padding:9px 10px;border-bottom:1px solid #E8DFD8;color:#5C524D;}
+#pdfReport .up{color:#4A7A5A;}
+#pdfReport .dn{color:#8A4848;}
+
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- TAB BAR -->
+  <div class="tab-bar">
+    <div class="tab active" onclick="go('dashboard')">Dashboard</div>
+    <div class="tab" onclick="go('calendar')">Calendar</div>
+    <div class="tab" onclick="go('insights')">Insights</div>
+    <div class="tab" onclick="go('ladder')">Ladder</div>
+  </div>
+
+  <!-- ══ DASHBOARD ══ -->
+  <div class="view active" id="view-dashboard">
+
+    <div class="page-header">
+      <div class="wordmark">COZYX <em>Journal</em></div>
+      <div class="today-chip" id="todayChip"></div>
+    </div>
+
+    <div class="intention-wrap">
+      <div class="intention-eyebrow">Today's intention</div>
+      <textarea class="intention-input" id="intentionInput" rows="2"
+        placeholder="My bias today is..."></textarea>
+      <div class="intention-saved" id="intentionSaved">Saved ✓</div>
+    </div>
+
+    <div class="balance-hero">
+      <div class="balance-eyebrow">Current Balance</div>
+      <div class="balance-number" id="balanceDisplay">
+        <sup>$</sup><span id="balInt">100</span><span class="dec" id="balDec">.00</span>
+      </div>
+      <div class="balance-delta flat" id="deltaBadge">$0.00 today</div>
+      <div class="progress-section">
+        <div class="progress-header">
+          <span class="progress-label">Weekly Goal</span>
+          <span class="progress-badge good" id="trackBadge">On track</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill" style="width:0%"></div>
+        </div>
+        <div class="progress-meta">
+          <span id="goalEarned">$0.00 earned</span>
+          <span id="goalTarget">Target $100</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">This Week</div>
+    <div class="week-row" id="weekRow"></div>
+
+    <div class="stat-trio">
+      <div class="stat-tile">
+        <span class="stat-num up" id="sMonthPnl">$0</span>
+        <span class="stat-label">Month P&L</span>
+      </div>
+      <div class="stat-tile">
+        <span class="stat-num" id="sTrades">0</span>
+        <span class="stat-label">Trades</span>
+      </div>
+      <div class="stat-tile">
+        <span class="stat-num" id="sLot">0.01</span>
+        <span class="stat-label">Lot Size</span>
+      </div>
+    </div>
+
+    <div class="insight-strip" id="insightStrip">
+      <span class="insight-icon">🌱</span>
+      <div class="insight-body" id="insightBody">
+        <strong>Good morning.</strong> Set your intention, check your key levels. One clean setup is all you need today.
+      </div>
+    </div>
+
+    <div class="section-row">
+      <span class="section-heading">Recent Trades</span>
+      <button class="action-btn" onclick="openModal()">+ Log Trade</button>
+    </div>
+    <div id="tradeList"></div>
+
+  </div>
+
+  <!-- ══ CALENDAR ══ -->
+  <div class="view" id="view-calendar">
+    <div class="cal-wrap">
+      <div class="cal-nav-row">
+        <button class="cal-arrow" onclick="prevMo()">‹</button>
+        <span class="cal-month-name" id="calTitle"></span>
+        <button class="cal-arrow" onclick="nextMo()">›</button>
+      </div>
+      <div class="cal-grid" id="calHeads"></div>
+      <div class="cal-grid" id="calCells"></div>
+      <div class="month-stats" id="moStats"></div>
+      <div class="export-row">
+        <button class="export-pill" onclick="doExport()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Export Month PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ INSIGHTS ══ -->
+  <div class="view" id="view-insights">
+    <div class="insights-wrap">
+      <div class="view-title">Trade Insights</div>
+      <div class="view-sub">Patterns from your notes</div>
+
+      <div class="insight-block">
+        <div class="insight-block-title">Note Keywords</div>
+        <div id="keywordsBlock"><div class="empty-state">Log trades with notes to reveal patterns.</div></div>
+      </div>
+
+      <div class="insight-block">
+        <div class="insight-block-title">By Day of Week</div>
+        <div id="daysBlock"><div class="empty-state">No data yet.</div></div>
+      </div>
+
+      <div class="insight-block">
+        <div class="insight-block-title">By Instrument</div>
+        <div id="instBlock"><div class="empty-state">No data yet.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ LADDER ══ -->
+  <div class="view" id="view-ladder">
+    <div class="ladder-wrap">
+      <div class="view-title">Compounding Ladder</div>
+      <div class="view-sub">$100 starting balance · double every week</div>
+
+      <div class="ladder-card" id="ladderCard"></div>
+
+      <div class="note-card">
+        <p>Each week your daily target doubles. You catch the <strong>same silver move</strong> — just with more lots. The risk stays the same percentage of your account.<br><br>
+        <strong>The one rule that protects the ladder:</strong> never compress your stop below $750. Tight stops get hunted. Correct stop, smaller size — always.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FAB -->
+<div class="fab-zone">
+  <button class="fab" onclick="openModal()">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+    Log Trade
+  </button>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div class="nav-btn active" id="nav-dashboard" onclick="go('dashboard')">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+    <span class="nav-lbl">Home</span>
+  </div>
+  <div class="nav-btn" id="nav-calendar" onclick="go('calendar')">
+    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+    <span class="nav-lbl">Calendar</span>
+  </div>
+  <div class="nav-btn" id="nav-insights" onclick="go('insights')">
+    <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 4-8"/></svg>
+    <span class="nav-lbl">Insights</span>
+  </div>
+  <div class="nav-btn" id="nav-ladder" onclick="go('ladder')">
+    <svg viewBox="0 0 24 24"><path d="M4 20h16M4 15h16M4 10h16M4 5h16"/></svg>
+    <span class="nav-lbl">Ladder</span>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="closeOverlay(event)">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Log a Trade</div>
+    <p style="font-family:'Jost',-apple-system,sans-serif;font-size:12px;color:var(--ink-4);margin:-12px 0 18px;font-weight:400;">Just the P&L — entry and exit are optional.</p>
+
+    <div class="field">
+      <label class="field-label">Instrument</label>
+      <select class="field-input" id="fInstrument">
+        <option>SIC — Silver Futures</option>
+        <option>SIL — Micro Silver</option>
+        <option>MNQ — Micro NQ</option>
+        <option>MES — Micro S&amp;P 500</option>
+        <option>GER40 — German 40</option>
+        <option>NDQ100 — Nasdaq 100</option>
+        <option>US2000 — Russell 2000</option>
+        <option>XAUUSD — Gold Spot</option>
+        <option>XAGUSD — Silver Spot</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Direction</label>
+      <div class="dir-pair">
+        <button class="dir-opt sel-long" id="dLong" onclick="setDir('long')">▲ Long</button>
+        <button class="dir-opt" id="dShort" onclick="setDir('short')">▼ Short</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">P&amp;L ($)</label>
+      <input class="field-input" type="number" id="fPnl" placeholder="e.g. 120.00 or -45.00" step="0.01" inputmode="decimal">
+    </div>
+
+    <div class="field">
+      <label class="field-label">Lot Size</label>
+      <input class="field-input" type="number" id="fLot" placeholder="0.01" step="0.01" value="0.01" inputmode="decimal">
+    </div>
+
+    <div class="field">
+      <label class="field-label">Note <span style="font-weight:400;text-transform:none;font-size:10px;color:var(--ink-4)">(optional)</span></label>
+      <input class="field-input" type="text" id="fNote" placeholder="e.g. wick cluster break ✓">
+    </div>
+
+    <input type="hidden" id="fEntry" value="0">
+    <input type="hidden" id="fExit" value="0">
+
+    <button class="save-btn" onclick="saveTrade()">Save Trade</button>
+  </div>
+</div>
+
+<div id="pdfReport"></div>
+
+<script>
+/* ── DATA ── */
+const START = 100;
+const RUNGS = [
+  {w:1,d:20,wk:100,lot:'0.01',s:100,e:200},
+  {w:2,d:40,wk:200,lot:'0.01',s:200,e:400},
+  {w:3,d:80,wk:400,lot:'0.02',s:400,e:800},
+  {w:4,d:160,wk:800,lot:'0.04',s:800,e:1600},
+];
+
+let trades     = JSON.parse(localStorage.getItem('cj_trades')||'[]');
+let intentions = JSON.parse(localStorage.getItem('cj_int')||'{}');
+let dir        = 'long';
+let calY       = new Date().getFullYear();
+let calM       = new Date().getMonth();
+
+/* ── HELPERS ── */
+const tdy  = ()=>new Date().toISOString().split('T')[0];
+const wkS  = ()=>{ const d=new Date(),day=d.getDay(),diff=d.getDate()-day+(day===0?-6:1); d.setDate(diff); return d.toISOString().split('T')[0]; };
+const fmtD = d=>new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+const $pnl = n=>(n>=0?'+':'')+`$${Math.abs(n).toFixed(2)}`;
+const sum  = arr=>arr.reduce((s,v)=>s+v,0);
+const ttl  = ()=>sum(trades.map(t=>t.pnl));
+const wPnl = ()=>{ const w=wkS(); return sum(trades.filter(t=>t.date>=w).map(t=>t.pnl)); };
+const tPnl = ()=>sum(trades.filter(t=>t.date===tdy()).map(t=>t.pnl));
+const bal  = ()=>START+ttl();
+const rung = ()=>{ const b=bal(); return b<200?0:b<400?1:b<800?2:3; };
+const wc   = ()=>RUNGS[rung()];
+
+/* ── NAVIGATION ── */
+function go(name) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(n=>n.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  document.querySelector(`.tab[onclick="go('${name}')"]`).classList.add('active');
+  const nb = document.getElementById('nav-'+name);
+  if(nb) nb.classList.add('active');
+  if(name==='calendar') drawCal();
+  if(name==='insights') drawInsights();
+  if(name==='ladder')   drawLadder();
+}
+
+/* ── INTENTION ── */
+function initIntention() {
+  const inp = document.getElementById('intentionInput');
+  inp.value = intentions[tdy()]||'';
+  inp.addEventListener('input',()=>{
+    intentions[tdy()] = inp.value;
+    localStorage.setItem('cj_int',JSON.stringify(intentions));
+    const s = document.getElementById('intentionSaved');
+    s.classList.add('show');
+    setTimeout(()=>s.classList.remove('show'),1400);
+  });
+}
+
+/* ── DASHBOARD ── */
+function drawDash() {
+  const b  = bal(), wp = wPnl(), tp = tPnl(), w = wc();
+
+  document.getElementById('todayChip').textContent =
+    new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+
+  const [i,d] = Math.abs(b).toFixed(2).split('.');
+  document.getElementById('balInt').textContent = i;
+  document.getElementById('balDec').textContent = '.'+d;
+
+  const delta = document.getElementById('deltaBadge');
+  if(tp>0) { delta.className='balance-delta up';   delta.textContent=`+$${tp.toFixed(2)} today`; }
+  else if(tp<0){ delta.className='balance-delta down'; delta.textContent=`-$${Math.abs(tp).toFixed(2)} today`; }
+  else { delta.className='balance-delta flat'; delta.textContent='$0.00 today'; }
+
+  const pct = Math.min(100,Math.max(0,(wp/w.wk)*100));
+  const fill = document.getElementById('progressFill');
+  fill.style.width = pct+'%';
+  fill.className = 'progress-fill'+(pct<20?' low':'');
+  document.getElementById('goalEarned').textContent = '$'+Math.max(0,wp).toFixed(2)+' earned';
+  document.getElementById('goalTarget').textContent = 'Target $'+w.wk;
+
+  const badge = document.getElementById('trackBadge');
+  const exp = (Math.min(new Date().getDay()||5,5)/5)*100;
+  badge.className = 'progress-badge '+(pct>=exp-15?'good':'warn');
+  badge.textContent = pct>=exp-15?'On track':'Behind';
+
+  const mp = ttl();
+  document.getElementById('sMonthPnl').textContent = (mp>=0?'+':'')+`$${Math.abs(mp).toFixed(0)}`;
+  document.getElementById('sMonthPnl').className = 'stat-num '+(mp>=0?'up':'down');
+  document.getElementById('sTrades').textContent = trades.length;
+  document.getElementById('sLot').textContent = w.lot;
+
+  const rem = w.wk-wp;
+  const ib = document.getElementById('insightBody');
+  const strip = document.getElementById('insightStrip');
+  strip.style.background = '';
+  strip.style.borderColor = '';
+  if(wp>=w.wk){
+    ib.innerHTML='<strong>Weekly goal reached! 🎉</strong> Consider protecting your gains and resting. Consistency compounds.';
+    strip.style.background='var(--up-pale)';
+    strip.style.borderColor='var(--up-border)';
+  } else if(pct>=60){
+    ib.innerHTML=`<strong>Almost there.</strong> $${rem.toFixed(2)} more to close this week. One clean ${w.lot} lot setup.`;
+  } else if(pct<20 && new Date().getDay()>=3){
+    ib.innerHTML=`<strong>Time to focus.</strong> $${rem.toFixed(2)} remaining. Stick to your process — wick cluster confirmation only.`;
+    strip.style.background='var(--down-pale)';
+    strip.style.borderColor='var(--down-border)';
+  } else if(!trades.length){
+    ib.innerHTML='<strong>Good morning.</strong> Set your intention, check your key levels. One clean setup is all you need today.';
+  } else {
+    ib.innerHTML=`<strong>On track.</strong> $${rem.toFixed(2)} more to hit this week. Patient. Precise. Purposeful.`;
+  }
+
+  drawWeek();
+  drawTrades();
+}
+
+function drawWeek() {
+  const ws  = wkS();
+  const wsD = new Date(ws+'T12:00:00');
+  const el  = document.getElementById('weekRow');
+  el.innerHTML = '';
+  ['Mon','Tue','Wed','Thu','Fri'].forEach((name,i)=>{
+    const d = new Date(wsD);
+    d.setDate(d.getDate()+i);
+    const ds = d.toISOString().split('T')[0];
+    const dayT = trades.filter(t=>t.date===ds);
+    const dp   = sum(dayT.map(t=>t.pnl));
+    const isToday = ds===tdy();
+    const fut = ds>tdy();
+    let cls = 'day-tile';
+    if(isToday) cls+=' is-today';
+    else if(!fut && dp>0) cls+=' is-up';
+    else if(!fut && dp<0) cls+=' is-down';
+    const val = fut?'—':!dayT.length?'—':(dp>=0?'+':'')+dp.toFixed(0);
+    const t = document.createElement('div');
+    t.className = cls;
+    t.innerHTML = `<span class="day-tile-name">${name}</span><span class="day-tile-val">${val}</span>`;
+    el.appendChild(t);
+  });
+}
+
+function drawTrades() {
+  const el  = document.getElementById('tradeList');
+  const rec = [...trades].reverse().slice(0,8);
+  if(!rec.length){
+    el.innerHTML = `<div class="trade-card"><div class="empty-state">No trades yet.<br>Tap Log Trade to get started.</div></div>`;
+    return;
+  }
+  el.innerHTML = `<div class="trade-card">${rec.map(t=>`
+    <div class="trade-row">
+      <div class="trade-pip ${t.pnl>=0?'up':'down'}"></div>
+      <div class="trade-main">
+        <div class="trade-name">
+          ${t.instrument.split('—')[0].trim()}
+          <span class="trade-tag ${t.direction}">${t.direction==='long'?'Long':'Short'}</span>
+        </div>
+        <div class="trade-note">${fmtD(t.date)} · ${t.note||'No note'}</div>
+      </div>
+      <div class="trade-right">
+        <div class="trade-pnl ${t.pnl>=0?'up':'down'}">${t.pnl>=0?'+':'-'}$${Math.abs(t.pnl).toFixed(2)}</div>
+        <div class="trade-lots">${t.lotSize} lots</div>
+      </div>
+    </div>`).join('')}</div>`;
+}
+
+/* ── CALENDAR ── */
+function drawCal() {
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('calTitle').textContent = MONTHS[calM]+' '+calY;
+  document.getElementById('calHeads').innerHTML = ['Mo','Tu','We','Th','Fr','Sa','Su'].map(d=>`<div class="cal-head">${d}</div>`).join('');
+  const cells = document.getElementById('calCells');
+  cells.innerHTML='';
+  const first = new Date(calY,calM,1);
+  const last  = new Date(calY,calM+1,0);
+  const startDow = (first.getDay()+6)%7;
+  const today = tdy();
+  for(let i=0;i<startDow;i++){
+    const c=document.createElement('div');c.className='cal-day other';cells.appendChild(c);
+  }
+  for(let d=1;d<=last.getDate();d++){
+    const ds=`${calY}-${String(calM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dt=trades.filter(t=>t.date===ds);
+    const dp=sum(dt.map(t=>t.pnl));
+    const has=dt.length>0;
+    const c=document.createElement('div');
+    c.className='cal-day'+(ds===today?' is-today':'')+(has&&dp>0?' is-up':has&&dp<0?' is-down':'');
+    c.innerHTML=`<span class="cal-d">${d}</span>${has?`<span class="cal-p ${dp>=0?'up':'down'}">${dp>=0?'+':'-'}$${Math.abs(dp).toFixed(0)}</span>`:''}`;
+    cells.appendChild(c);
+  }
+  const mt=trades.filter(t=>{ const [y,m]=t.date.split('-'); return parseInt(y)===calY&&parseInt(m)-1===calM; });
+  const mp=sum(mt.map(t=>t.pnl));
+  const mb=mt.length?Math.max(...mt.map(t=>t.pnl)):0;
+  const mw=mt.length?Math.min(...mt.map(t=>t.pnl)):0;
+  document.getElementById('moStats').innerHTML=`
+    <div class="m-stat"><span class="m-stat-val ${mp>=0?'up':'down'}">${mp>=0?'+':'-'}$${Math.abs(mp).toFixed(2)}</span><span class="m-stat-label">Total P&L</span></div>
+    <div class="m-stat"><span class="m-stat-val">${mt.length}</span><span class="m-stat-label">Trades</span></div>
+    <div class="m-stat"><span class="m-stat-val up">+$${mb.toFixed(2)}</span><span class="m-stat-label">Best Trade</span></div>
+    <div class="m-stat"><span class="m-stat-val down">-$${Math.abs(mw).toFixed(2)}</span><span class="m-stat-label">Worst Trade</span></div>`;
+}
+function prevMo(){ calM--; if(calM<0){calM=11;calY--;} drawCal(); }
+function nextMo(){ calM++; if(calM>11){calM=0;calY++;} drawCal(); }
+
+/* ── INSIGHTS ── */
+function drawInsights() {
+  const kw = {};
+  trades.forEach(t=>{
+    if(!t.note) return;
+    [...new Set(t.note.toLowerCase().split(/[\s,\.]+/).filter(w=>w.length>3))].forEach(w=>{
+      if(!kw[w])kw[w]={n:0,p:0};
+      kw[w].n++; kw[w].p+=t.pnl;
+    });
+  });
+  const kwSorted = Object.entries(kw).filter(([,v])=>v.n>=2).sort((a,b)=>b[1].n-a[1].n).slice(0,6);
+  const kb = document.getElementById('keywordsBlock');
+  if(!kwSorted.length){ kb.innerHTML='<div class="empty-state">Log trades with notes to reveal patterns.</div>'; }
+  else { kb.innerHTML = kwSorted.map(([w,v])=>`<div class="insight-row"><span class="insight-pill">${w}</span><div class="insight-info"><div class="insight-name">${v.n} trade${v.n>1?'s':''}</div><div class="insight-avg">Avg ${$pnl(v.p/v.n)} per trade</div></div><div class="insight-total ${v.p>=0?'up':'down'}">${$pnl(v.p)}</div></div>`).join(''); }
+
+  const byD={Monday:[],Tuesday:[],Wednesday:[],Thursday:[],Friday:[],Saturday:[],Sunday:[]};
+  trades.forEach(t=>{ const day=new Date(t.date+'T12:00:00').toLocaleDateString('en-US',{weekday:'long'}); if(byD[day])byD[day].push(t.pnl); });
+  const dStats=Object.entries(byD).filter(([,v])=>v.length>0).map(([d,v])=>({d,t:sum(v),c:v.length})).sort((a,b)=>b.t-a.t);
+  const db=document.getElementById('daysBlock');
+  if(!dStats.length){db.innerHTML='<div class="empty-state">No data yet.</div>';}
+  else{db.innerHTML=dStats.map(s=>`<div class="insight-row"><span class="insight-pill">${s.d.slice(0,3)}</span><div class="insight-info"><div class="insight-name">${s.c} trade${s.c>1?'s':''}</div><div class="insight-avg">Avg ${$pnl(s.t/s.c)}</div></div><div class="insight-total ${s.t>=0?'up':'down'}">${$pnl(s.t)}</div></div>`).join('');}
+
+  const byI={};
+  trades.forEach(t=>{ const i=t.instrument.split('—')[0].trim(); if(!byI[i])byI[i]={p:0,c:0}; byI[i].p+=t.pnl; byI[i].c++; });
+  const iList=Object.entries(byI).sort((a,b)=>b[1].p-a[1].p);
+  const ib=document.getElementById('instBlock');
+  if(!iList.length){ib.innerHTML='<div class="empty-state">No data yet.</div>';}
+  else{ib.innerHTML=iList.map(([i,v])=>`<div class="insight-row"><span class="insight-pill">${i}</span><div class="insight-info"><div class="insight-name">${v.c} trade${v.c>1?'s':''}</div><div class="insight-avg">Avg ${$pnl(v.p/v.c)}</div></div><div class="insight-total ${v.p>=0?'up':'down'}">${$pnl(v.p)}</div></div>`).join('');}
+}
+
+/* ── LADDER ── */
+function drawLadder() {
+  const b = bal();
+  document.getElementById('ladderCard').innerHTML = RUNGS.map(r=>{
+    const done   = b>=r.e;
+    const active = !done && b>=r.s;
+    return `<div class="ladder-row">
+      <div class="ladder-badge ${done?'done':active?'active':''}">${done?'✓':'W'+r.w}</div>
+      <div class="ladder-info">
+        <div class="ladder-title">$${r.d}/day · ${r.lot} lots</div>
+        <div class="ladder-sub">$${r.s} → $${r.e}</div>
+      </div>
+      <div class="ladder-end">$${r.e}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ── PDF ── */
+function doExport() {
+  const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const mt=trades.filter(t=>{ const [y,m]=t.date.split('-'); return parseInt(y)===calY&&parseInt(m)-1===calM; });
+  const mp=sum(mt.map(t=>t.pnl));
+  const mw=mt.filter(t=>t.pnl>0).length;
+  const mb=mt.length?Math.max(...mt.map(t=>t.pnl)):0;
+  const mwo=mt.length?Math.min(...mt.map(t=>t.pnl)):0;
+  const rep=document.getElementById('pdfReport');
+  rep.style.display='block';
+  rep.innerHTML=`<h1>COZYX Journal</h1><div class="ps">${MONTHS[calM]} ${calY} · Monthly Report</div>
+    <div class="pg">
+      <div class="pst"><span class="psv ${mp>=0?'up':'dn'}">${mp>=0?'+':'-'}$${Math.abs(mp).toFixed(2)}</span><span class="psl">Total P&L</span></div>
+      <div class="pst"><span class="psv">${mt.length}</span><span class="psl">Trades</span></div>
+      <div class="pst"><span class="psv">${mt.length?Math.round(mw/mt.length*100):0}%</span><span class="psl">Win Rate</span></div>
+      <div class="pst"><span class="psv up">+$${mb.toFixed(2)}</span><span class="psl">Best Trade</span></div>
+      <div class="pst"><span class="psv dn">-$${Math.abs(mwo).toFixed(2)}</span><span class="psl">Worst Trade</span></div>
+      <div class="pst"><span class="psv">${bal()>=0?'+':'-'}$${Math.abs(bal()).toFixed(2)}</span><span class="psl">Balance</span></div>
+    </div>
+    <table><thead><tr><th>Date</th><th>Instrument</th><th>Direction</th><th>Lots</th><th>P&L</th><th>Note</th></tr></thead>
+    <tbody>${mt.map(t=>`<tr><td>${fmtD(t.date)}</td><td>${t.instrument.split('—')[0].trim()}</td><td>${t.direction==='long'?'▲ Long':'▼ Short'}</td><td>${t.lotSize}</td><td class="${t.pnl>=0?'up':'dn'}">${t.pnl>=0?'+':'-'}$${Math.abs(t.pnl).toFixed(2)}</td><td>${t.note||'—'}</td></tr>`).join('')}</tbody></table>`;
+  html2pdf().set({margin:16,filename:`COZYX_${MONTHS[calM]}_${calY}.pdf`,html2canvas:{scale:2,backgroundColor:'#FBF8F5'},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}}).from(rep).save().then(()=>rep.style.display='none');
+}
+
+/* ── MODAL ── */
+function openModal()  { document.getElementById('overlay').classList.add('open'); }
+function closeModal() { document.getElementById('overlay').classList.remove('open'); }
+function closeOverlay(e){ if(e.target===document.getElementById('overlay')) closeModal(); }
+
+function setDir(d) {
+  dir = d;
+  document.getElementById('dLong').className  = 'dir-opt'+(d==='long'?' sel-long':'');
+  document.getElementById('dShort').className = 'dir-opt'+(d==='short'?' sel-short':'');
+}
+
+function saveTrade() {
+  const inst  = document.getElementById('fInstrument').value;
+  const entry = parseFloat(document.getElementById('fEntry').value);
+  const exit  = parseFloat(document.getElementById('fExit').value);
+  const lot   = parseFloat(document.getElementById('fLot').value)||0.01;
+  const mPnl  = parseFloat(document.getElementById('fPnl').value);
+  const note  = document.getElementById('fNote').value.trim();
+  let pnl = mPnl;
+  if(isNaN(pnl) && !isNaN(entry) && !isNaN(exit))
+    pnl = (dir==='long'?exit-entry:entry-exit)*lot*100;
+  if(isNaN(pnl)){ alert('Please enter a P&L amount'); return; }
+  trades.push({id:Date.now(),date:tdy(),instrument:inst,direction:dir,entry:entry||0,exit:exit||0,lotSize:lot,pnl,note});
+  localStorage.setItem('cj_trades',JSON.stringify(trades));
+  ['fEntry','fExit','fPnl','fNote'].forEach(id=>document.getElementById(id).value='');
+  setDir('long');
+  closeModal();
+  drawDash();
+}
+
+/* ── INIT ── */
+initIntention();
+drawDash();
+</script>
+</body>
+</html>
